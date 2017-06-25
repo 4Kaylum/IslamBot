@@ -43,6 +43,12 @@ class UserMoney(object):
             # There was only one role that matched that hitstring
             pass
 
+        # Determine whether the user already has the role or not
+        userRoles = list(ctx.message.author.roles)
+        if wantedRole[0] in userRoles:
+            await self.bot.say('You already have that role!')
+            return
+
         # Determine whether or not they have enough money for it
         userData = getFileJson('userMoney.json')
         userMoney = userData.get(ctx.message.author.id, 0)
