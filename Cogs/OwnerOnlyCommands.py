@@ -1,6 +1,8 @@
 from os import execl
 from sys import exit, executable, argv, exc_info
+from discord import Status
 from discord.ext import commands
+from Cogs.Utils.Permissions import permissionChecker
 
 
 class OwnerOnly(object):
@@ -32,8 +34,8 @@ class OwnerOnly(object):
         '''
 
         # If it is, tell the user the bot it dying
-        await self.sparcli.say('*Finally*.')
-        await self.sparcli.change_presence(status=Status.invisible, game=None)
+        await self.bot.say('*Finally*.')
+        await self.bot.change_presence(status=Status.invisible, game=None)
         exit()
 
     @commands.command(pass_context=True, hidden=True, aliases=['rs'])
@@ -44,8 +46,8 @@ class OwnerOnly(object):
         '''
 
         # If it is, tell the user the bot it dying
-        await self.sparcli.say('Now restarting.')
-        await self.sparcli.change_presence(status=Status.dnd, game=None)
+        await self.bot.say('Now restarting.')
+        await self.bot.change_presence(status=Status.dnd, game=None)
         execl(executable, *([executable] + argv))  
 
 

@@ -1,6 +1,6 @@
 from discord.ext import commands
-from Cogs.Utils.Exceptions import *
-from Cogs.Utils.FileHandling import getConfigs
+from Cogs.Utils.Exceptions import*
+from Cogs.Utils.FileHandling import getCogConfigurations, getFileJson
 from Cogs.Utils.Messages import messageToEmbed
 from Cogs.Utils.PrintableMessage import PrintableMessage
 
@@ -10,21 +10,24 @@ class EventHandler(object):
     def __init__(self, bot):
         self.bot = bot
         self.logChannels, self.logMessages, self.privateMessages = getCogConfigurations(bot)
+        self.serverSettings = getFileJson('Configs.json')
 
-    async def on_message(self, message):
-        '''
-        Message handler for the bot. Prints debug messages.
-        '''
+    # async def on_message(self, message):
+    #     '''
+    #     Message handler for the bot. Prints debug messages.
+    #     '''
 
-        if server.id != self.serverSettings['Server ID']: return
-        # print(PrintableMessage(message))
-        # await self.bot.process_commands(message)
+    #     if message.server == None: return
+    #     if message.server.id != self.serverSettings['Server ID']: return
+    #     # print(PrintableMessage(message))
+    #     # await self.bot.process_commands(message)
 
     async def on_message_delete(self, message):
         '''
         Logs deleted messages from users.
         '''
 
+        server = message.server
         if server.id != self.serverSettings['Server ID']: return
         em = messageToEmbed(message)
         c = self.logChannels['Deleted Messages']
@@ -35,6 +38,7 @@ class EventHandler(object):
         Triggered when a member joins the server.
         '''
 
+        server = member.server
         if server.id != self.serverSettings['Server ID']: return
         try:
             f = self.privateMessages['Joins'].format(user=member, server=member.server)
@@ -51,6 +55,7 @@ class EventHandler(object):
         Triggered when a member is removed from (leaves, is kicked) the server.
         '''
 
+        server = member.server
         if server.id != self.serverSettings['Server ID']: return
         c = self.logChannels['Leaves']
         f = self.logMessages['Leaves'].format(user=member, server=member.server)
@@ -61,6 +66,7 @@ class EventHandler(object):
         Triggered when a member is banned.
         '''
 
+        server = member.server
         if server.id != self.serverSettings['Server ID']: return
         c = self.logChannels['Bans']
         f = self.logMessages['Nonbot Bans'].format(user=member)

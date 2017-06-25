@@ -1,5 +1,5 @@
 from discord.ext import commands 
-from Cogs.Utils.DatabaseHandling import getFileJson, saveFileJson
+from Cogs.Utils.FileHandling import getFileJson, saveFileJson
 from Cogs.Utils.FileHandling import getCogConfigurations
 
 class UserMoney(object): 
@@ -37,7 +37,8 @@ class UserMoney(object):
             await self.bot.say('There were no roles that matched the hitstring `{}`.'.format(roleName))
             return
         elif len(wantedRole) > 1:
-            await self.bot.say('There were multiple roles that matched the hitstring `{}`; \n* {}'.format(roleName, .'\n* '.join(wantedRole)))
+            v = 'There were multiple roles that matched the hitstring `{}`; \n* {}'.format(roleName, '\n* '.join(wantedRole))
+            await self.bot.say(v)
             return
         else:
             # There was only one role that matched that hitstring

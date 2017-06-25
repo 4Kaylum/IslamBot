@@ -1,7 +1,6 @@
 from discord import Member
 from discord.ext import commands 
-from Cogs.Utils.DatabaseHandling import getFileJson, saveFileJson
-from Cogs.Utils.FileHandling import getCogConfigurations
+from Cogs.Utils.FileHandling import getCogConfigurations, getFileJson, saveFileJson
 from Cogs.Utils.Permissions import permissionChecker
 
 

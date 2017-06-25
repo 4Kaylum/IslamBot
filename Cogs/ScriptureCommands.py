@@ -1,10 +1,19 @@
-from re import match
+from re import finditer
 from json import loads
 from collections import OrderedDict
 from aiohttp import ClientSession
+from urllib.parse import quote, unquote
 from discord.ext import commands
 from Cogs.Utils.Messages import makeEmbed
 from Cogs.Utils.Permissions import hasRoles 
+
+
+def match(pattern, string):
+    q = finditer(pattern, string)
+    try:
+        return list(q)[0]
+    except IndexError:
+        return None
 
 
 class Scriptures(object):
@@ -27,7 +36,7 @@ class Scriptures(object):
 
     @commands.command(pass_context=True)
     @hasRoles()
-    async def bible(self, *, script:str):
+    async def bible(self, ctx, *, script:str):
         '''
         Gives you the Christian Bible quote from a specific script
         '''
@@ -43,13 +52,15 @@ class Scriptures(object):
         # It is - send it to the API
         await self.bot.send_typing(ctx.message.channel)
 
-        # Acutally do some processing
+        # Actually do some processing
+        script = quote(script, safe='')
         async with self.session.get('https://getbible.net/json?scrip={}'.format(script)) as r:
             try:
-                apiText = await r.text()[1:-2]
-                apiData = loads(apiText)
+                apiText = await r.text()
+                apiData = loads(apiText[1:-2])
             except Exception as e:
-                apiData == None
+                apiData = None
+        script = unquote(script)
 
         # Just check if it's something that we can process
         if not apiData:

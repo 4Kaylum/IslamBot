@@ -1,13 +1,19 @@
 from json import loads, dumps
 
 
+if '\\' in __file__:
+    cwd = '/'.join(__file__.split('\\')[:-1])
+else:
+    cwd = '/',join(__file__.split('/')[:-1])
+
+
 def getFileJson(jsonName):
     '''
     Gets the json file and dumps/returns it.
     '''
 
     # Reads from the file
-    with open(workingDirectory + '/../Storage/{}'.format(jsonName)) as a:
+    with open(cwd + '/../../Storage/{}'.format(jsonName)) as a:
         data = a.read()
 
     # Loads it into a dictionary to return it
@@ -23,16 +29,12 @@ def saveFileJson(jsonName, jsonData):
     data = dumps(jsonData, indent=4)
 
     # Puts it into the file
-    with open(workingDirectory + '/../Storage/{}'.format(jsonName), 'w') as a:
+    with open(cwd + '/../../Storage/{}'.format(jsonName), 'w') as a:
         a.write(data)
 
 
-def getConfigs():
-    return getJson('Storage/Configs.json')
-
-
 def getCogConfigurations(bot):
-    serverSettings = getConfigs()
+    serverSettings = getFileJson('Configs.json')
     mainServerID = serverSettings['Server ID']
     mainServer = bot.get_server(mainServerID)
 

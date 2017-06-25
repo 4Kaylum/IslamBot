@@ -17,14 +17,14 @@ class UserModel(object):
             return False
 
     def changeAmount(self, authorID):
-        jsonData = getFileJson('money.json')
+        jsonData = getFileJson('userMoney.json')
         changeInt = randint(5, 10)
         currentMoney = jsonData.get(authorID, 0)
 
         # Change stored data
         currentMoney += changeInt
         jsonData[authorID] = currentMoney
-        saveFileJson('money.json', jsonData)
+        saveFileJson('userMoney.json', jsonData)
 
     def onMessage(self, message):
         if self.timeCheck(message):

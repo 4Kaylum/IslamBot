@@ -8,7 +8,7 @@ Created by Caleb#2831'''
 
 
 def getCommandPrefix(bot, message):
-	return ['.', '{.mention} '.format(bot.user)]
+	return ['\'', '{.mention} '.format(bot.user)]
 
 
 bot = commands.Bot(
@@ -19,7 +19,7 @@ bot = commands.Bot(
 
 
 # Generate files if they don't exist
-necessaryFiles = ['bible.json', 'customCommands.json', 'moneyCounts.json', 'roleCosts.json', 'warnCounts.json']
+necessaryFiles = ['bible.json', 'customCommands.json', 'userMoney.json', 'buyableRoles.json', 'userWarns.json']
 for i in necessaryFiles:
     try:
         with open('./Storage/{}'.format(i)) as a:
@@ -30,13 +30,14 @@ for i in necessaryFiles:
 
 
 initialExtentions = [
-    'EventHandler.py',
-    'ScriptureCommands.py',
-    'UserModeration.py',
-    'UserMoney.py',
-    'UserWarnings.py',
-    'OwnerOnlyCommands.py',
-    'MiscCommands.py',
+    'EventHandler',
+    'ScriptureCommands',
+    'UserModeration',
+    'UserMoney',
+    'UserWarnings',
+    'OwnerOnlyCommands',
+    'MiscCommands',
+    'CustomCommands',
 ]
 
 
@@ -57,7 +58,7 @@ async def on_ready():
 
         # This is necessary because I'm bad at code
         try:
-            bot.load_extension('Cogs/'+extension)
+            bot.load_extension('Cogs.'+extension)
 
         # Print out any errors
         except Exception as e:

@@ -1,5 +1,5 @@
 from discord.ext import commands
-from .FileHandling import getConfigs
+from .FileHandling import getFileJson
 from .Exceptions import *
 
 
@@ -23,7 +23,7 @@ def permissionChecker(**kwargs):
         channel = ctx.message.channel
         server = ctx.message.server 
         author = ctx.message.author
-        settings = getConfigs()
+        settings = getFileJson('Configs.json')
 
         # Checks if it's an owner
         if author.id in settings['Owner IDs'] + owners:
