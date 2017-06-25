@@ -28,6 +28,15 @@ for i in necessaryFiles:
             a.write('{}')
 
 
+initialExtentions = [
+    'EventHandler.py',
+    'ScriptureCommands.py',
+    'UserModeration.py',
+    'UserMoney.py',
+    'UserWarnings.py',
+]
+
+
 @bot.event
 async def on_ready():
     # Some classic prints
