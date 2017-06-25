@@ -34,6 +34,7 @@ initialExtentions = [
     'UserModeration.py',
     'UserMoney.py',
     'UserWarnings.py',
+    'OwnerOnlyCommands.py',
 ]
 
 
@@ -54,7 +55,7 @@ async def on_ready():
 
         # This is necessary because I'm bad at code
         try:
-            bot.load_extension(extension)
+            bot.load_extension('Cogs/'+extension)
 
         # Print out any errors
         except Exception as e:
