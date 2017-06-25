@@ -16,7 +16,7 @@ class Scriptures(object):
             'StripAuthor': r'(.+\b)([0-9]+:)',
             'GetPassages': r'([0-9]+:[0-9]+)',
             'GetMax': r'(-[0-9]+)',
-            'QuranMatch': r''
+            'QuranMatch': r'([0-9]+:[0-9]+([-0-9]+)?)'
         }
         self.biblePicture = 'http://pacificbible.com/wp/wp-content/uploads/2015/03/holy-bible.png'
         self.quranPicture = 'http://www.siotw.org/modules/burnaquran/images/quran.gif'
@@ -39,10 +39,14 @@ class Scriptures(object):
             script = matches.group()
 
         # It is - send it to the API
+        await self.bot.send_typing(ctx.message.channel)
+
+        # Acutally do some processing
         async with self.session.get('https://getbible.net/json?scrip={}'.format(script)) as r:
             try:
-                apiData = await r.json()
-            except:
+                apiText = await r.text()[1:-2]
+                apiData = loads(apiText)
+            except Exception as e:
                 apiData == None
 
         # Just check if it's something that we can process
@@ -71,13 +75,93 @@ class Scriptures(object):
         # And done c:
         await self.bot.say(embed=em)
 
+    async def getQuran(self, number, mini, maxi, english=True):
+        '''
+        Sends stuff off to the API to be processed, returns embed object
+        '''
+
+        o = OrderedDict()
+        if english:
+            base = 'http://api.alquran.cloud/ayah/{}:{}/en.sahih'
+        else:
+            base = 'http://api.alquran.cloud/ayah/{}:{}'
+
+        # Get the data from the API
+        async with self.session.get(base.format(number, mini)) as r:
+            data = await r.json()
+
+        author = data['data']['surah']['englishName'] if english else data['data']['surah']['name']
+        o['{}:{}'.format(number, mini)] = data['data']['text']
+
+        for verse in range(mini+1, maxi):
+            async with self.session.get(base.format(number, verse)) as r:
+                data = await r.json()
+            o['{}:{}'.format(number, verse)] = data['data']['text']
+
+        em = makeEmbed(fields=o, author=author, author_icon=self.quranPicture)
+        return em
+
     @commands.command(pass_context=True)
     async def quran(self, ctx, *, script:str):
         '''
         Gives you a Quran quote given a specific verse
         '''
 
-        pass
+        # http://api.alquran.cloud/ayah/{}/en.sahih
+
+        # Check if it's a valid request
+        matches = match(self.regexMatches['QuranMatch'], script)
+        if not matches:
+            self.bot.say('That string was malformed, and could not be processed. Please try again.')
+            return
+        else:
+            script = matches.group()
+
+        # It is - prepare to send it to an API
+        await self.bot.send_typing(ctx.message.channel)
+
+        # Acutally do some processing
+        number = int(script.split(':')[0])
+        minQuote = int(script.split(':')[1].split('-')[0])
+        try:
+            maxQuote = int(script.split(':')[1].split('-')[1]) + 1
+        except IndexError as e:
+            maxQuote = minQuote + 1
+
+        # Send it off nicely to the API to be processed
+        em = await self.getQuran(number, minQuote, maxQuote)
+        await self.bot.say(embed=em)
+
+    @commands.command(pass_context=True)
+    async def aquran(self, ctx, *, script:str):
+        '''
+        Gives you a Quran quote given a specific verse
+        '''
+
+        # http://api.alquran.cloud/ayah/{}/en.sahih
+
+        # Check if it's a valid request
+        matches = match(self.regexMatches['QuranMatch'], script)
+        if not matches:
+            self.bot.say('That string was malformed, and could not be processed. Please try again.')
+            return
+        else:
+            script = matches.group()
+
+        # It is - prepare to send it to an API
+        await self.bot.send_typing(ctx.message.channel)
+
+        # Acutally do some processing
+        number = int(script.split(':')[0])
+        minQuote = int(script.split(':')[1].split('-')[0])
+        try:
+            maxQuote = int(script.split(':')[1].split('-')[1]) + 1
+        except IndexError as e:
+            maxQuote = minQuote + 1
+
+        # Send it off nicely to the API to be processed
+        em = await self.getQuran(number, minQuote, maxQuote, False)
+        await self.bot.say(embed=em)
 
 
 def setup(bot):
