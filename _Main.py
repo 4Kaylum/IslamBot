@@ -1,3 +1,4 @@
+from sys import argv
 import discord
 from discord.ext import commands
 
@@ -64,5 +65,4 @@ async def on_ready():
             print('Failed to load extension {}\n{}'.format(extension, exc))
 
 
-settings = getConfigs()
-bot.run(settings['Token'])
+bot.run(argv[1])
