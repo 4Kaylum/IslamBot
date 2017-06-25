@@ -24,6 +24,9 @@ class UserModeration(object):
 
         # Set up local variable
         moderator = ctx.message.author
+        if user == moderator:
+            await self.bot.say('You\'re an idiot.')
+            return
 
         # Try to send a message to the banned user
         try:
@@ -62,6 +65,9 @@ class UserModeration(object):
 
         # Set up local variable
         moderator = ctx.message.author
+        if user == moderator:
+            await self.bot.say('You\'re an idiot.')
+            return
 
         # Try to send a message to the banned user
         try:
@@ -100,6 +106,9 @@ class UserModeration(object):
 
         # Set up local variable
         moderator = ctx.message.author
+        if user == moderator:
+            await self.bot.say('You\'re an idiot.')
+            return
 
         # Try to send a message to the banned user
         try:
