@@ -76,7 +76,7 @@ class UserWarnings(object):
         '''
 
         if amount >= 3:
-            await self.bot.say('You can only set a maximum of 3 warnings on a user.')
+            await self.bot.say('You can only *set* a maximum of 2 warnings on a user.')
             return
         elif amount < 0:
             await self.bot.say('You can\'t... you can\'t give someone *negative* warnings. That\'s dumb. Stop that. Don\'t be dumb.')
