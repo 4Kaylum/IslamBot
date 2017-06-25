@@ -70,3 +70,9 @@ def permissionChecker(**kwargs):
             return False
 
     return commands.check(predicate)
+
+
+def hasRoles(**kwargs):
+    def predicate(ctx):
+        return len(ctx.message.author.roles) != 1
+    return commands.check(predicate)

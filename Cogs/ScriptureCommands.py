@@ -4,6 +4,7 @@ from collections import OrderedDict
 from aiohttp import ClientSession
 from discord.ext import commands
 from Cogs.Utils.Messages import makeEmbed
+from Cogs.Utils.Permissions import hasRoles 
 
 
 class Scriptures(object):
@@ -25,6 +26,7 @@ class Scriptures(object):
         self.session.close()
 
     @commands.command(pass_context=True)
+    @hasRoles()
     async def bible(self, *, script:str):
         '''
         Gives you the Christian Bible quote from a specific script
@@ -102,6 +104,7 @@ class Scriptures(object):
         return em
 
     @commands.command(pass_context=True)
+    @hasRoles()
     async def quran(self, ctx, *, script:str):
         '''
         Gives you a Quran quote given a specific verse
@@ -133,6 +136,7 @@ class Scriptures(object):
         await self.bot.say(embed=em)
 
     @commands.command(pass_context=True)
+    @hasRoles()
     async def aquran(self, ctx, *, script:str):
         '''
         Gives you a Quran quote given a specific verse
