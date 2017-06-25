@@ -7,73 +7,73 @@ from Cogs.Utils.PrintableMessage import PrintableMessage
 
 class EventHandler(object):
 
-	def __init__(self, bot):
-		self.bot = bot
-		self.logChannels, self.logMessages, self.privateMessages = getCogConfigurations(bot)
+    def __init__(self, bot):
+        self.bot = bot
+        self.logChannels, self.logMessages, self.privateMessages = getCogConfigurations(bot)
 
-	async def on_message(self, message):
-		'''
-		Message handler for the bot. Prints debug messages.
-		'''
+    async def on_message(self, message):
+        '''
+        Message handler for the bot. Prints debug messages.
+        '''
 
-		if server.id != self.serverSettings['Server ID']: return
-		# print(PrintableMessage(message))
-		# await self.bot.process_commands(message)
+        if server.id != self.serverSettings['Server ID']: return
+        # print(PrintableMessage(message))
+        # await self.bot.process_commands(message)
 
-	async def on_message_delete(self, message):
-		'''
-		Logs deleted messages from users.
-		'''
+    async def on_message_delete(self, message):
+        '''
+        Logs deleted messages from users.
+        '''
 
-		if server.id != self.serverSettings['Server ID']: return
-		em = messageToEmbed(message)
-		await self.bot.send_message('This message was just deleted from {.memtion}.'.format(message.channel), embed=em)
+        if server.id != self.serverSettings['Server ID']: return
+        em = messageToEmbed(message)
+        await self.bot.send_message('This message was just deleted from {.memtion}.'.format(message.channel), embed=em)
 
-	async def on_member_join(self, member):
-		'''
-		Triggered when a member joins the server.
-		'''
+    async def on_member_join(self, member):
+        '''
+        Triggered when a member joins the server.
+        '''
 
-		if server.id != self.serverSettings['Server ID']: return
-		try:
-			f = self.privateMessages['Joins'].format(user=member, server=member.server)
-			await self.bot.send_message(member, f)
-		except Exception:
-			pass
+        if server.id != self.serverSettings['Server ID']: return
+        try:
+            f = self.privateMessages['Joins'].format(user=member, server=member.server)
+            await self.bot.send_message(member, f)
+        except Exception:
+            pass
 
-		c = self.logChannels['Joins']
-		f = self.logMessages['Joins'].format(user=member, server=member.server)
-		await self.bot.send_message(c, f)
+        c = self.logChannels['Joins']
+        f = self.logMessages['Joins'].format(user=member, server=member.server)
+        await self.bot.send_message(c, f)
 
-	async def on_member_remove(self, member):
-		'''
-		Triggered when a member is removed from (leaves, is kicked) the server.
-		'''
+    async def on_member_remove(self, member):
+        '''
+        Triggered when a member is removed from (leaves, is kicked) the server.
+        '''
 
-		if server.id != self.serverSettings['Server ID']: return
-		c = self.logChannels['Leaves']
-		f = self.logMessages['Leaves'].format(user=member, server=member.server)
-		await self.bot.send_message(c, f)
+        if server.id != self.serverSettings['Server ID']: return
+        c = self.logChannels['Leaves']
+        f = self.logMessages['Leaves'].format(user=member, server=member.server)
+        await self.bot.send_message(c, f)
 
-	async def on_member_ban(self, member):
-		'''
-		Triggered when a member is banned.
-		'''
+    async def on_member_ban(self, member):
+        '''
+        Triggered when a member is banned.
+        '''
 
-		if server.id != self.serverSettings['Server ID']: return
-		c = self.logChannels['Bans']
-		f = self.logMessages['Nonbot Bans'].format(user=member)
-		await self.bot.send_message(c, f)
+        if server.id != self.serverSettings['Server ID']: return
+        c = self.logChannels['Bans']
+        f = self.logMessages['Nonbot Bans'].format(user=member)
+        await self.bot.send_message(c, f)
 
-	async def on_member_unban(self, server, user):
-		'''
-		Triggered when a user is unbanned from a server.
-		'''
+    async def on_member_unban(self, server, user):
+        '''
+        Triggered when a user is unbanned from a server.
+        '''
 
-		if server.id != self.serverSettings['Server ID']: return
-		c = self.logChannels['Unbans']
-		f = self.logMessages['Unbans'].format(user=member)
-		await self.bot.send_message(c, f)
+        if server.id != self.serverSettings['Server ID']: return
+        c = self.logChannels['Unbans']
+        f = self.logMessages['Unbans'].format(user=member)
+        await self.bot.send_message(c, f)
 
     async def on_command_error(self, error, ctx):
         channel = ctx.message.channel
@@ -117,5 +117,5 @@ class EventHandler(object):
 
 
 def setup(bot):
-	x = EventHandler(bot)
-	bot.add_cog(x)
+    x = EventHandler(bot)
+    bot.add_cog(x)
