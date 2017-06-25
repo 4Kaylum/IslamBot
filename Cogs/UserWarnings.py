@@ -27,7 +27,7 @@ class UserWarnings(object):
         moderator = ctx.message.author
 
         # Get the current warnings for the user
-        warningData = getFileJson('warnings.json')
+        warningData = getFileJson('userWarns.json')
         warnAmounts = warningData.get(user.id, 0)
 
         # Increment their warns by one
@@ -57,7 +57,7 @@ class UserWarnings(object):
             del warningData[user.id]
         else:
             warningData[user.id] = warnAmounts
-        saveFileJson('warnings.json', warningData)
+        saveFileJson('userWarns.json', warningData)
 
         # Send a message back to the user
         await self.bot.say('👌 This user has had a warning applied for reason `{}`.'.format(reason))
@@ -83,7 +83,7 @@ class UserWarnings(object):
             return
 
         # Get the current warnings for the user
-        warningData = getFileJson('warnings.json')
+        warningData = getFileJson('userWarns.json')
 
         # Save the new warning data 
         if amount == 0:
@@ -93,7 +93,7 @@ class UserWarnings(object):
                 pass
         else:
             warningData[user.id] = warnAmounts
-        saveFileJson('warnings.json', warningData)
+        saveFileJson('userWarns.json', warningData)
 
         # Send a message back to the user
         await self.bot.say('👌 This user has had their warnings set to `{}`.'.format(amount))
