@@ -35,6 +35,7 @@ initialExtentions = [
     'UserMoney.py',
     'UserWarnings.py',
     'OwnerOnlyCommands.py',
+    'MiscCommands.py',
 ]
 
 
