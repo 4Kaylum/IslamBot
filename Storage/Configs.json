@@ -1,0 +1,34 @@
+{
+	"Server ID": "257521597693427712",
+	"Owner IDs": [
+		"141231597155385344", 
+		"90112544001261568"
+	],
+	"Channels": {
+		"Joins": "257641647377088512",
+		"Leaves": "257641647377088512",
+		"Bans": "257641647377088512",
+		"Kicks": "257641647377088512",
+		"Deleted Messages": "257641647377088512",
+		"Warns": "257641647377088512",
+		"Unbans": "257641647377088512"
+	},
+	"Messages": {
+		"Logs": {
+			"Joins": "**{user}** (`{user.id}`) has just joined the server c:",
+			"Leaves": "**{user}** (`{user.id}`) has just left the server :c",
+			"Bot Bans": "__**User Ban**__\n**User:** {user} (`{user.id}`)\n**Moderator:**: {moderator} (`{moderator.id}`)\n**Reason:** {reason}",
+			"Kicks": "__**User Kick**__\n**User:** {user} (`{user.id}`)\n**Moderator:**: {moderator} (`{moderator.id}`)\n**Reason:** {reason}",
+			"Nonbot Bans": "**{user}** (`{user.id}`) has just been banned from this server.",
+			"Warns": "__**User Warning**__\n**User:** {user} (`{user.id}`)\n**Moderator:**: {moderator} (`{moderator.id}`)\n**Reason:** {reason}",
+			"Warn Kick": "__**User Warning/Kick**__\n**User:** {user} (`{user.id}`)\n**Moderator:**: {moderator} (`{moderator.id}`)\n**Reason:** {reason}",
+			"Unbans": "**{user}** (`{user.id`} has just been unbanned from this server."
+		},
+		"PMs": {
+			"Joins": "As salamu 3aleykum **{user}**, welcome to the **{server.name}** Discord server! Please read the rules in the <#257532399456485376> channel. New members can talk in <#257521597693427712>. For access to other channels, please click here <https://goo.gl/forms/QPbanQE9loVg13G82>.",
+			"Kicks": "You have been kicked from the **{server.name}** Discord server for the reason `{reason}`. You may join us back at <http://muslim.chat/>",
+			"Bans": "You have just been banned from the **{server.name}** Discord server for the reason `{reason}` :c",
+			"Warn Kick": "You have been kicked on the **{server.name}** Discord server by for reason `{1}`, with this being your third warning. You may join us back at <http://muslim.chat/>."
+		}
+	}
+}
