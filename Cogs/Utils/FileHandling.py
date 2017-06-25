@@ -1,4 +1,4 @@
-from json import loads
+from json import loads, dumps
 
 
 def getFileJson(jsonName):
