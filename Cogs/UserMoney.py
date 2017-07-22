@@ -1,11 +1,17 @@
 from discord.ext import commands 
 from Cogs.Utils.FileHandling import getFileJson, saveFileJson, getCogConfigurations
+from Cogs.Utils.MoneyHandling import Banker
+
 
 class UserMoney(object): 
 
     def __init__(self, bot):
         self.bot = bot
         self.logChannels, self.logMessages, self.privateMessages = getCogConfigurations(bot)
+        self.banker = Banker()
+
+    async def on_message(self, message):
+        self.banker.handle(message)
 
     @commands.command(pass_context=True, aliases=['wallet'])
     async def money(self, ctx):

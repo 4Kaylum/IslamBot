@@ -30,15 +30,16 @@ for i in necessaryFiles:
 
 
 initialExtentions = [
+    'CustomCommands',
     'EventHandler',
+    'MiscCommands',
+    'MoneyModeration',
+    'OwnerOnlyCommands',
+    'RoleModeration',
     'ScriptureCommands',
     'UserModeration',
     'UserMoney',
     'UserWarnings',
-    'OwnerOnlyCommands',
-    'MiscCommands',
-    'CustomCommands',
-    'RoleModeration',
 ]
 
 
