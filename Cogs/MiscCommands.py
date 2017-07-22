@@ -17,7 +17,7 @@ class Misc(object):
         d = await self.bot.purge_from(ctx.message.channel, limit=amount, check=lambda x: x.author.id == self.bot.user.id)
         await self.bot.say('Removed `{}` messages.'.format(len(d)))
 
-    @commands.command(pass_context=True)
+    @commands.command(pass_context=True, hidden=True)
     async def annoycaleb(self, ctx):
         '''
         Fuck off.
