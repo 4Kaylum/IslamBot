@@ -1,6 +1,5 @@
 from discord.ext import commands 
-from Cogs.Utils.FileHandling import getFileJson, saveFileJson
-from Cogs.Utils.FileHandling import getCogConfigurations
+from Cogs.Utils.FileHandling import getFileJson, saveFileJson, getCogConfigurations
 
 class UserMoney(object): 
 
@@ -30,7 +29,7 @@ class UserMoney(object):
         availableRoles = [i for i in serverRoles if i.id in roleIDs]
 
         # Determine what role they were trying to search for
-        wantedRole = [i for i in availableRoles if roleName.lower() in i.name.lower()]
+        wantedRole = [i for i in availableRoles if roleName.lower() in i.name.lower() or roleName == i.id]
 
         # Determine if that role exists
         if len(wantedRole) == 0:
