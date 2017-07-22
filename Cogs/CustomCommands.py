@@ -15,7 +15,7 @@ class CustomCommands(object):
         Triggers the command to be used
         '''
         
-        commandResponse = self.cc.get(message.content)
+        commandResponse = self.cc.get(message.content.lower())
         if commandsResponse:
             await self.bot.send_message(message.channel, commandResponse)
         else:
