@@ -39,5 +39,8 @@ class Banker(object):
 
     def handle(self, message):
         author = message.author.id
-        userObj = self.handled.get(author, UserModel(message))
+        userObj = self.handled.get(author)
+        if not userObj:
+            userObj = UserModel(message)
+            self.handled[author] = userObj
         userObj.onMessage(message)
