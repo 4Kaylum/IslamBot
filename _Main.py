@@ -38,6 +38,7 @@ initialExtentions = [
     'OwnerOnlyCommands',
     'MiscCommands',
     'CustomCommands',
+    'RoleModeration',
 ]
 
 
