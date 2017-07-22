@@ -6,7 +6,7 @@ class UserModel(object):
 
     def __init__(self, message):
         # self.lastSent = message.timestamp
-        self.lastSent = 0
+        self.lastSent = datetime.now() - timedelta(seconds=10**4)
         # self.changeAmount(message.author.id)
 
     def timeCheck(self, message):

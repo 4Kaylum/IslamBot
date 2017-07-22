@@ -16,7 +16,7 @@ class CustomCommands(object):
         '''
         
         commandResponse = self.cc.get(message.content.lower())
-        if commandsResponse:
+        if commandResponse:
             await self.bot.send_message(message.channel, commandResponse)
         else:
             pass

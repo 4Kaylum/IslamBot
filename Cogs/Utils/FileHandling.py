@@ -4,7 +4,7 @@ from json import loads, dumps
 if '\\' in __file__:
     cwd = '/'.join(__file__.split('\\')[:-1])
 else:
-    cwd = '/',join(__file__.split('/')[:-1])
+    cwd = '/'.join(__file__.split('/')[:-1])
 
 
 def getFileJson(jsonName):

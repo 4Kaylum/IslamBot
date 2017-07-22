@@ -8,7 +8,7 @@ Created by Caleb#2831'''
 
 
 def getCommandPrefix(bot, message):
-	return ['\'', '{.mention} '.format(bot.user)]
+	return ['.', '{.mention} '.format(bot.user)]
 
 
 bot = commands.Bot(
