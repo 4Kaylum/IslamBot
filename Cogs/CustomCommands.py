@@ -98,7 +98,6 @@ class CustomCommands(object):
         saveFileJson('customCommands.json', commands)
 
 
-
 def setup(bot):
     x = CustomCommands(bot)
     bot.add_cog(x)
