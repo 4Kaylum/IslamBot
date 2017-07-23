@@ -34,7 +34,7 @@ class UserMoney(object):
 
         roleData = getFileJson('buyableRoles.json')
         roleIDs = list(roleData.keys())
-        serverRoles = list(ctx.message.roles)
+        serverRoles = list(ctx.message.server.roles)
         availableRoles = [i for i in serverRoles if i.id in roleIDs]
 
         # Determine what role they were trying to search for
@@ -45,7 +45,8 @@ class UserMoney(object):
             await self.bot.say('There were no roles that matched the hitstring `{}`.'.format(roleName))
             return
         elif len(wantedRole) > 1:
-            v = 'There were multiple roles that matched the hitstring `{}`; \n* {}'.format(roleName, '\n* '.join(wantedRole))
+            v = 'There were multiple roles that matched the hitstring `{}`; \n* {}'.format(
+                roleName, '\n* '.join(['`{}`'.format(i.name) for i in wantedRole]))
             await self.bot.say(v)
             return
         else:
@@ -67,7 +68,7 @@ class UserMoney(object):
             return
 
         # They have enough money - add the role and deduct money from their account
-        self.bot.add_roles(ctx.message.author, wantedRole[0])
+        await self.bot.add_roles(ctx.message.author, wantedRole[0])
         userMoney -= roleCost
         userData[ctx.message.author.id] = userMoney
         saveFileJson('userMoney.json', userData)
