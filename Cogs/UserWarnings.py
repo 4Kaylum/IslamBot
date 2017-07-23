@@ -62,7 +62,7 @@ class UserWarnings(object):
         await self.bot.say('👌 This user has had a warning applied for reason `{}`.'.format(reason))
 
         # Send a message to the logs channel
-        if server.id != self.serverSettings['Server ID']: return
+        if ctx.message.server.id != self.serverSettings['Server ID']: return
         c = self.logChannels[warnType]
         f = self.logMessages[warnType].format(user=member, moderator=moderator, reason=reason)
         await self.bot.send_message(c, f)
