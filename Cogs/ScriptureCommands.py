@@ -1,4 +1,4 @@
-from re import finditer
+from re import finditer, search
 from json import loads
 from collections import OrderedDict
 from aiohttp import ClientSession
@@ -206,21 +206,31 @@ class Scriptures(object):
             siteText = await r.text()
 
         # Make sure it's a valid set of text
-        if 'You have entered an incorrect URL. Please use the menu above to navigate the website.' in siteText:
-            await self.bot.say('You\'ve submitted an incorrect format for the Hadith parsing.'
-                'Please see this command\'s help message.')
+        if 'You have entered an incorrect URL. Please use the menu above to navigate the website' in siteText:
+            await self.bot.say('The URL parsed was invalid. Sorry :/')
+            return
 
         # Parse from the site
-        siteSplit = siteText.replace('\n', '').replace('<i>', '*').replace('</i>', '*')
-        regexString = r'<div class=\"englishcontainer\" id=t[0-9]+><div class=\"english_hadith_full\">' + \
-                      r'<div class=hadith_narrated><p>.+</div><div class=text_details>.+</b></div>'
-        matches = match(regexString, siteSplit).group()
-        regexString = r'<div class=hadith_narrated><p>.+</div><'
-        siteFrom = match(regexString, matches).group().split('>')[2].split('<')[0].strip()
-        regexString = r'<div class=text_details>.+</b>'
-        siteText = match(regexString, matches).group().split('>')[2].split('<')[0].strip()
+        siteRaw = siteText.replace('\n', '').replace('<i>', '*').replace('</i>', '*')
 
-        # Generate the embed
+        # Get the relevant snippet
+        r = r'<div class=\"englishcontainer\" id=t[0-9]+><div class=\"english_hadith_full\"><div class=hadith_narrated>.+<\/div><div class=text_details>.+<\/b><\/div>'
+        try:
+            relevantSnippet = search(r, siteRaw).group()
+        except Exception:
+            await self.bot.say('The URL parsed was invalid. Sorry :/')
+            return
+
+        # Get the narrator
+        r = r'<div class=hadith_narrated>.*<\/div><div class=text_details>'
+        hadithNarrator = search(r, relevantSnippet).group().replace('<p>', '').split('>')[1].split('<')[0].strip()
+
+        # Get the Hadith text
+        r = r'<div class=text_details>.*<\/b>'
+        hadithText = search(r, relevantSnippet).group().replace('<p>', '').split('>')[1].split('<')[0].strip()
+        
+
+        # Fix the author
         bookAuthor = {
             'bukhari':'Sahih Bukhari',
             'muslim':'Sahih Muslim',
@@ -235,15 +245,19 @@ class Scriptures(object):
             'qudsi40':'40 Hadith Qudsi',
             'nawawi40':'40 Hadith Nawawi'
         }.get(bookAuthor, bookAuthor)
+
+        # Fix up some other stuff
+        hadithText = hadithText.replace('<p>', '').replace('</p>', '')
+        hadithNarrator = hadithNarrator.replace('<p>', '').replace('</p>', '')
+
+        # Generate the embed properly
         author = f'{bookAuthor} {bookNumber}:{hadithNumber}'.title()
-        em = makeEmbed(fields={siteFrom:siteText}, author=author, colour=0x78c741, author_icon=self.hadithPicture, author_url=siteURL)
+        em = makeEmbed(fields={hadithNarrator:hadithText}, author=author, colour=0x78c741, author_icon=self.hadithPicture, author_url=siteURL)
         try:
             await self.bot.say(embed=em)
         except Exception:
-            em = makeEmbed(fields={siteFrom:siteText[:800]+'...'}, author=author, colour=0x78c741, author_icon=self.hadithPicture, author_url=siteURL)
+            em = makeEmbed(fields={hadithNarrator:hadithText[:500]+'...'}, author=author, colour=0x78c741, author_icon=self.hadithPicture, author_url=siteURL)
             await self.bot.say('That was too long to get fully. Here\'s the best I can do:', embed=em)
-        # print(f'author: {author}' + str({siteFrom:siteText}))
-        # await self.bot.say(len(str({siteFrom:siteText})))
 
 
 def setup(bot):
