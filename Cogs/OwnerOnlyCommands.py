@@ -28,6 +28,16 @@ class OwnerOnly(object):
 
     @commands.command(pass_context=True, hidden=True)
     @permissionChecker(check='is_owner')
+    async def cls(self, ctx):
+        '''
+        Clears the console
+        '''
+
+        print('\n' * 50)
+        await self.bot.say('Done.')
+
+    @commands.command(pass_context=True, hidden=True)
+    @permissionChecker(check='is_owner')
     async def kill(self, ctx):
         '''
         Kills the bot. Makes it deaded
