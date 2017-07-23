@@ -3,6 +3,7 @@ from json import loads
 from collections import OrderedDict
 from aiohttp import ClientSession
 from urllib.parse import quote, unquote
+from html import unescape
 from discord.ext import commands
 from Cogs.Utils.Messages import makeEmbed
 from Cogs.Utils.Permissions import hasRoles 
@@ -30,6 +31,7 @@ class Scriptures(object):
         }
         self.biblePicture = 'http://pacificbible.com/wp/wp-content/uploads/2015/03/holy-bible.png'
         self.quranPicture = 'http://www.siotw.org/modules/burnaquran/images/quran.gif'
+        self.hadithPicture = 'https://sunnah.com/images/hadith_icon2_huge.png'
 
     def __unload(self):
         self.session.close()
@@ -177,6 +179,71 @@ class Scriptures(object):
         # Send it off nicely to the API to be processed
         em = await self.getQuran(number, minQuote, maxQuote, False)
         await self.bot.say(embed=em)
+
+    @commands.command(pass_context=True)
+    async def hadith(self, ctx, bookAuthor:str, bookNumber:str, hadithNumber:str=None):
+        '''
+        Gets a particular hadith
+        '''
+
+        # Get the hadith number and book numbers into the right variables
+        if not hadithNumber:
+            if not ':' in bookNumber:
+                await self.bot.say('That is not a valid format to get a Hadith.'
+                    'Please see this command\'s help message.')
+                return
+            bookNumber, hadithNumber = [i.strip() for i in bookNumber.split(':')]
+
+        await self.bot.send_typing(ctx.message.channel)
+
+        # Special case book authors are sucky
+        bookAuthor = {'qudsi':'qudsi40','nawawi':'nawawi40'}.get(bookAuthor.lower(), bookAuthor.lower())
+
+        # Grab the links from the site
+        # print(f'https://sunnah.com/{bookAuthor}/{bookNumber}/{hadithNumber}')
+        siteURL = f'https://sunnah.com/{bookAuthor}/{bookNumber}/{hadithNumber}'
+        async with self.session.get(siteURL) as r:
+            siteText = await r.text()
+
+        # Make sure it's a valid set of text
+        if 'You have entered an incorrect URL. Please use the menu above to navigate the website.' in siteText:
+            await self.bot.say('You\'ve submitted an incorrect format for the Hadith parsing.'
+                'Please see this command\'s help message.')
+
+        # Parse from the site
+        siteSplit = siteText.replace('\n', '').replace('<i>', '*').replace('</i>', '*')
+        regexString = r'<div class=\"englishcontainer\" id=t[0-9]+><div class=\"english_hadith_full\">' + \
+                      r'<div class=hadith_narrated><p>.+</div><div class=text_details>.+</b></div>'
+        matches = match(regexString, siteSplit).group()
+        regexString = r'<div class=hadith_narrated><p>.+</div><'
+        siteFrom = match(regexString, matches).group().split('>')[2].split('<')[0].strip()
+        regexString = r'<div class=text_details>.+</b>'
+        siteText = match(regexString, matches).group().split('>')[2].split('<')[0].strip()
+
+        # Generate the embed
+        bookAuthor = {
+            'bukhari':'Sahih Bukhari',
+            'muslim':'Sahih Muslim',
+            'tirmidhi':'Jami` at-Tirmidhi',
+            'abudawud':'Sunan Abi Dawud',
+            'nasai':"Sunan an-Nasa'i",
+            'ibnmajah':'Sunan Ibn Majah',
+            'malik':'Muwatta Malik',
+            'riyadussaliheen':'Riyad as-Salihin',
+            'adab':"Al-Adab Al-Mufrad",
+            'bulugh':'Bulugh al-Maram',
+            'qudsi40':'40 Hadith Qudsi',
+            'nawawi40':'40 Hadith Nawawi'
+        }.get(bookAuthor, bookAuthor)
+        author = f'{bookAuthor} {bookNumber}:{hadithNumber}'.title()
+        em = makeEmbed(fields={siteFrom:siteText}, author=author, colour=0x78c741, author_icon=self.hadithPicture, author_url=siteURL)
+        try:
+            await self.bot.say(embed=em)
+        except Exception:
+            em = makeEmbed(fields={siteFrom:siteText[:800]+'...'}, author=author, colour=0x78c741, author_icon=self.hadithPicture, author_url=siteURL)
+            await self.bot.say('That was too long to get fully. Here\'s the best I can do:', embed=em)
+        # print(f'author: {author}' + str({siteFrom:siteText}))
+        # await self.bot.say(len(str({siteFrom:siteText})))
 
 
 def setup(bot):
