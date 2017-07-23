@@ -31,7 +31,7 @@ class EventHandler(object):
         if server.id != self.serverSettings['Server ID']: return
         em = messageToEmbed(message)
         c = self.logChannels['Deleted Messages']
-        await self.bot.send_message(c, 'This message was just deleted from {.memtion}.'.format(message.channel), embed=em)
+        await self.bot.send_message(c, 'This message was just deleted from {.mention}.'.format(message.channel), embed=em)
 
     async def on_member_join(self, member):
         '''
