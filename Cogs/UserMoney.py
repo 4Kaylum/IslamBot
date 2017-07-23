@@ -21,7 +21,10 @@ class UserMoney(object):
 
         userData = getFileJson('userMoney.json')
         userMoney = userData.get(ctx.message.author.id, 0)
-        await self.bot.whisper('You have `{}` credits in your account.'.format(userMoney))
+        try:
+            await self.bot.whisper('You have `{}` credits in your account.'.format(userMoney))
+        except Exception as e:
+            await self.bot.say('I can\'t send you PMs. Please enable these to allow me to send you messages.')
 
     @commands.command(pass_context=True)
     async def buyrole(self, ctx, *, roleName:str):

@@ -18,7 +18,10 @@ class MoneyModeration(object):
 
         userData = getFileJson('userMoney.json')
         userMoney = userData.get(user.id, 0)
-        await self.bot.whisper('The user `{}` has `{}` credits in their account.'.format(user, userMoney))
+        try:
+            await self.bot.whisper('The user `{}` has `{}` credits in their account.'.format(user, userMoney))
+        except Exception as e:
+            await self.bot.say('I can\'t send you PMs. Please enable these to allow me to send you messages.')
 
     @commands.command(pass_context=True)
     @permissionChecker(check='administrator')
