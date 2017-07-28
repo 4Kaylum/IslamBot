@@ -48,7 +48,7 @@ class UserModeration(object):
         await self.bot.say('👌 This user has been banned for reason `{}`.'.format(reason))
 
         # Send a message to the modlogs
-        if server.id != self.serverSettings['Server ID']: return
+        if ctx.message.server.id != self.serverSettings['Server ID']: return
         c = self.logChannels['Bans']
         f = self.logMessages['Bans'].format(user=member, moderator=moderator, reason=reason)
         await self.bot.send_message(c, f)
@@ -89,7 +89,7 @@ class UserModeration(object):
         await self.bot.say('👌 This user has been banned for reason `{}`.'.format(reason))
 
         # Send a message to the modlogs
-        if server.id != self.serverSettings['Server ID']: return
+        if ctx.message.server.id != self.serverSettings['Server ID']: return
         c = self.logChannels['Bans']
         f = self.logMessages['Bans'].format(user=member, moderator=moderator, reason=reason)
         await self.bot.send_message(c, f)
@@ -130,7 +130,7 @@ class UserModeration(object):
         await self.bot.say('👌 This user has been kicked for reason `{}`.'.format(reason))
 
         # Send a message to the modlogs
-        if server.id != self.serverSettings['Server ID']: return
+        if ctx.message.server.id != self.serverSettings['Server ID']: return
         c = self.logChannels['Kicks']
         f = self.logMessages['Kicks'].format(user=member, moderator=moderator, reason=reason)
         await self.bot.send_message(c, f)
@@ -160,7 +160,7 @@ class UserModeration(object):
         await self.bot.say('👌 This user has been kicked for reason `{}`.'.format(reason))
 
         # Send a message to the modlogs
-        if server.id != self.serverSettings['Server ID']: return
+        if ctx.message.server.id != self.serverSettings['Server ID']: return
         c = self.logChannels['Jailed']
         f = self.logMessages['Jailed'].format(user=member, moderator=moderator, reason=reason)
         await self.bot.send_message(c, f)
@@ -190,7 +190,7 @@ class UserModeration(object):
         await self.bot.say('👌 This user has been kicked for reason `{}`.'.format(reason))
 
         # Send a message to the modlogs
-        if server.id != self.serverSettings['Server ID']: return
+        if ctx.message.server.id != self.serverSettings['Server ID']: return
         c = self.logChannels['Unjailed']
         f = self.logMessages['Unjailed'].format(user=member, moderator=moderator, reason=reason)
         await self.bot.send_message(c, f)

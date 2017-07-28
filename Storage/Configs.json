@@ -31,7 +31,7 @@
 			"Joins": "As salamu 3aleykum **{user}**, welcome to the **{server.name}** Discord server! Please read the rules in the <#257532399456485376> channel. New members can talk in <#257521597693427712>. For access to other channels, please click here <https://goo.gl/forms/QPbanQE9loVg13G82>.",
 			"Kicks": "You have been kicked from the **{server.name}** Discord server for the reason `{reason}`. You may join us back at <http://muslim.chat/>",
 			"Bans": "You have just been banned from the **{server.name}** Discord server for the reason `{reason}` :c",
-			"Warn Kick": "You have been kicked on the **{server.name}** Discord server by for reason `{1}`, with this being your third warning. You may join us back at <http://muslim.chat/>."
+			"Warn Kick": "You have been kicked on the **{server.name}** Discord server by for reason `{reason}`, with this being your third warning. You may join us back at <http://muslim.chat/>."
 		}
 	}
 }

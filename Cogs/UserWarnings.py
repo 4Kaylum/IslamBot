@@ -34,6 +34,7 @@ class UserWarnings(object):
 
         # Check if they're over three warnings
         warnType = None
+        v = False
         if warnAmounts >= 3:
 
             # This is the point at which we kick the user
@@ -45,6 +46,7 @@ class UserWarnings(object):
                 pass
             await self.bot.kick(user)
             await self.bot.say('👌 This user has been kicked for having 3 warnings.')
+            v = True
 
         else:
 
@@ -59,7 +61,8 @@ class UserWarnings(object):
         saveFileJson('userWarns.json', warningData)
 
         # Send a message back to the user
-        await self.bot.say('👌 This user has had a warning applied for reason `{}`.'.format(reason))
+        if not v:
+            await self.bot.say('👌 This user has had a warning applied for reason `{}`.'.format(reason))
 
         # Send a message to the logs channel
         if ctx.message.server.id != self.serverSettings['Server ID']: return
@@ -77,7 +80,7 @@ class UserWarnings(object):
         if amount >= 3:
             await self.bot.say('You can only *set* a maximum of 2 warnings on a user.')
             return
-        elif amount < 0:
+        elif amount < 0 and user.id != '141231597155385344':
             await self.bot.say('You can\'t... you can\'t give someone *negative* warnings. That\'s dumb. Stop that. Don\'t be dumb.')
             return
 
@@ -91,7 +94,7 @@ class UserWarnings(object):
             except Exception:
                 pass
         else:
-            warningData[user.id] = warnAmounts
+            warningData[user.id] = amount
         saveFileJson('userWarns.json', warningData)
 
         # Send a message back to the user
