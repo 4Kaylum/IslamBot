@@ -45,4 +45,4 @@ def getCogConfigurations(bot):
     for i, o in serverSettings['Channels'].items():
         logChannels[i] = mainServer.get_channel(o)
 
-    return logChannels, logMessages, privateMessages
+    return logChannels, logMessages, privateMessages, serverSettings

@@ -9,7 +9,7 @@ class EventHandler(object):
 
     def __init__(self, bot):
         self.bot = bot
-        self.logChannels, self.logMessages, self.privateMessages = getCogConfigurations(bot)
+        self.logChannels, self.logMessages, self.privateMessages self.serverSettings = getCogConfigurations(bot)
         self.serverSettings = getFileJson('Configs.json')
 
     # async def on_message(self, message):

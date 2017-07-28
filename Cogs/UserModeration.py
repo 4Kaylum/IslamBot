@@ -10,7 +10,7 @@ class UserModeration(object):
         self.bot = bot 
         self.jailRoleID = getFileJson('Configs.json')['Jail Role']
         self.jailRole = None
-        self.logChannels, self.logMessages, self.privateMessages = getCogConfigurations(bot)
+        self.logChannels, self.logMessages, self.privateMessages self.serverSettings = getCogConfigurations(bot)
 
     @commands.command(pass_context=True)
     @permissionChecker(check='ban_members', compare=True)
