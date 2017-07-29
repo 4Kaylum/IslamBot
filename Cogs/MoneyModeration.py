@@ -1,13 +1,39 @@
+from re import search
 from discord import Member
 from discord.ext import commands
 from Cogs.Utils.Permissions import permissionChecker 
 from Cogs.Utils.FileHandling import getFileJson, saveFileJson
+from Cogs.Utils.Exceptions import MemberMissingPermissions
 
 
 class MoneyModeration(object):
 
     def __init__(self, bot:commands.Bot):
         self.bot = bot
+        self.additionRegex = r'^.<@\d+>\+\+ -*\d+$'
+
+    async def on_message(self, message):
+        
+        # Determine if using the `.user++ amount` syntax
+        if not search(self.additionRegex, message.content):
+            return
+
+        # They are - check permissions
+        if not message.channel.server.permissions_for(message.author).manage_channels:
+            return
+
+        # Wew that was a long line; change the user
+        user = message.channel.server.get_member(''.join(i for i in message.content.split(' ')[0] if i.isdigit()))
+        amount = int(message.content.split(' ')[1])
+
+        # Copy paste from the other command 
+        userData = getFileJson('userMoney.json')
+        userMoney = userData.get(user.id, 0)
+        userMoney += amount
+        userData[user.id] = userMoney
+        saveFileJson('userMoney.json', userData)
+        await self.bot.say('This user\'s account has now been modified by a factor of `{}`.'.format(amount))
+
 
     @commands.command(pass_context=True)
     @permissionChecker(check='manage_channels')
