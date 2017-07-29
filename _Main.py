@@ -40,6 +40,7 @@ initialExtentions = [
     'UserModeration',
     'UserMoney',
     'UserWarnings',
+    'BreakageDetector',
 ]
 
 
