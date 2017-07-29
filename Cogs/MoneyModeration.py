@@ -16,11 +16,18 @@ class MoneyModeration(object):
         
         # Determine if using the `.user++ amount` syntax
         if not search(self.additionRegex, message.content):
+            print('a')
             return
 
         # They are - check permissions
-        if not message.channel.server.permissions_for(message.author).manage_channels:
-            return
+        if message.author.server_permissions.manage_channels:
+            pass
+        elif getFileJson('Configs.json')['Owner IDs']:
+            pass
+        elif message.author.server_permissions.administrator:
+            pass
+        else:
+            raise MemberMissingPermissions
 
         # Wew that was a long line; change the user
         user = message.channel.server.get_member(''.join(i for i in message.content.split(' ')[0] if i.isdigit()))
@@ -32,7 +39,10 @@ class MoneyModeration(object):
         userMoney += amount
         userData[user.id] = userMoney
         saveFileJson('userMoney.json', userData)
-        await self.bot.say('This user\'s account has now been modified by a factor of `{}`.'.format(amount))
+        await self.bot.send_message(
+            message.channel, 
+            'This user\'s account has now been modified by a factor of `{}`.'.format(amount)
+        )
 
 
     @commands.command(pass_context=True)
