@@ -10,7 +10,7 @@ class MoneyModeration(object):
         self.bot = bot
 
     @commands.command(pass_context=True)
-    @permissionChecker(check='administrator')
+    @permissionChecker(check='manage_channels')
     async def moneyof(self, ctx, user:Member):
         '''
         Shows you the amount of money a particular user has
@@ -24,11 +24,19 @@ class MoneyModeration(object):
             await self.bot.say('I can\'t send you PMs. Please enable these to allow me to send you messages.')
 
     @commands.command(pass_context=True)
-    @permissionChecker(check='administrator')
-    async def addmoney(self, ctx, amount:int, user:Member):
+    @permissionChecker(check='manage_channels')
+    async def addmoney(self, ctx, amount, user):
         '''
         Adds money to a user's account
         '''
+
+        try:
+            amount = int(amount)
+            userMention = user
+        except ValueError:
+            userMention, amount = amount, int(user)
+
+        user = ctx.message.server.get_member(''.join(i for i in userMention if i.isdigit()))
 
         userData = getFileJson('userMoney.json')
         userMoney = userData.get(user.id, 0)
@@ -38,11 +46,16 @@ class MoneyModeration(object):
         await self.bot.say('This user\'s account has now been modified by a factor of `{}`.'.format(amount))
 
     @commands.command(pass_context=True)
-    @permissionChecker(check='administrator')
-    async def removemoney(self, ctx, amount:int, user:Member):
+    @permissionChecker(check='manage_channels')
+    async def removemoney(self, ctx, amount, user):
         '''
         Removes money from a user's account
         '''
+
+        try:
+            int(amount)
+        except ValueError:
+            user, amount = amount, user
 
         userData = getFileJson('userMoney.json')
         userMoney = userData.get(user.id, 0)
