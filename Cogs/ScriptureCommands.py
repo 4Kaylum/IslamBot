@@ -247,7 +247,7 @@ class Scriptures(object):
         }.get(bookAuthor, bookAuthor)
 
         # Fix up some other stuff
-        hadithText = hadithText.replace('<p>', '').replace('</p>', '')
+        hadithText = hadithText.replace('<p>', '').replace('</p>', '').replace('`', '\\`')
         hadithNarrator = hadithNarrator.replace('<p>', '').replace('</p>', '')
 
         # Generate the embed properly
