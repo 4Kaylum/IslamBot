@@ -1,8 +1,36 @@
+from asyncio import sleep
 from discord.ext import commands
 from Cogs.Utils.Exceptions import*
 from Cogs.Utils.FileHandling import getCogConfigurations, getFileJson
 from Cogs.Utils.Messages import messageToEmbed
 from Cogs.Utils.PrintableMessage import PrintableMessage
+
+
+class DeleteHandler(object):
+    def __init__(self, bot, channel):
+        self.listCatcher = {}
+        self.channel = channel
+        self.bot = bot
+
+    def add(self, message):
+        userData = self.listCatcher.get(message.author.id, [])
+        userData.append(message)
+        self.listCatcher[message.author.id] = userData
+
+    async def output(self):
+        for i, o in self.listCatcher.items():
+            if len(o) > 1:
+                em = messageToEmbed(o[0])
+                await self.bot.send_message(self.channel, 'The user `{0}` (`{0.id}`) has just had `{1}` messages deleted.'.format(o[0].author, len(o)))
+            else:
+                em = messageToEmbed(o[0])
+                await self.bot.send_message(self.channel, 'This message was just deleted from {.mention}.'.format(o[0].channel), embed=em)
+        self.listCatcher = {}
+
+    async def run(self):
+        while not self.bot.is_closed:
+            await self.output()
+            await sleep(10)
 
 
 class EventHandler(object):
@@ -11,16 +39,8 @@ class EventHandler(object):
         self.bot = bot
         self.logChannels, self.logMessages, self.privateMessages, self.serverSettings = getCogConfigurations(bot)
         self.serverSettings = getFileJson('Configs.json')
-
-    # async def on_message(self, message):
-    #     '''
-    #     Message handler for the bot. Prints debug messages.
-    #     '''
-
-    #     if message.server == None: return
-    #     if message.server.id != self.serverSettings['Server ID']: return
-    #     # print(PrintableMessage(message))
-    #     # await self.bot.process_commands(message)
+        self.handler = DeleteHandler(bot, self.logChannels['Deleted Messages'])
+        bot.loop.create_task(self.handler.run())
 
     async def on_message_delete(self, message):
         '''
@@ -29,9 +49,8 @@ class EventHandler(object):
 
         server = message.server
         if server.id != self.serverSettings['Server ID']: return
-        em = messageToEmbed(message)
-        c = self.logChannels['Deleted Messages']
-        await self.bot.send_message(c, 'This message was just deleted from {.mention}.'.format(message.channel), embed=em)
+        self.handler.add(message)
+        
 
     async def on_member_join(self, member):
         '''
@@ -79,7 +98,7 @@ class EventHandler(object):
 
         if server.id != self.serverSettings['Server ID']: return
         c = self.logChannels['Unbans']
-        f = self.logMessages['Unbans'].format(user=member)
+        f = self.logMessages['Unbans'].format(user=user)
         await self.bot.send_message(c, f)
 
     async def on_command_error(self, error, ctx):

@@ -18,14 +18,14 @@
 		"Logs": {
 			"Joins": "**{user}** (`{user.id}`) has just joined the server c:",
 			"Leaves": "**{user}** (`{user.id}`) has just left the server :c",
-			"Bot Bans": "__**User Ban**__\n**User:** {user} (`{user.id}`)\n**Moderator:**: {moderator} (`{moderator.id}`)\n**Reason:** {reason}",
-			"Kicks": "__**User Kick**__\n**User:** {user} (`{user.id}`)\n**Moderator:**: {moderator} (`{moderator.id}`)\n**Reason:** {reason}",
-			"Nonbot Bans": "**{user}** (`{user.id}`) has just been banned from this server.",
-			"Warns": "__**User Warning**__\n**User:** {user} (`{user.id}`)\n**Moderator:**: {moderator} (`{moderator.id}`)\n**Reason:** {reason}",
-			"Warn Kick": "__**User Warning/Kick**__\n**User:** {user} (`{user.id}`)\n**Moderator:**: {moderator} (`{moderator.id}`)\n**Reason:** {reason}",
+			"Bot Bans": "__**User Ban**__\n**User:** `{user}` (`{user.id}`)\n**Moderator:**: `{moderator}` (`{moderator.id}`)\n**Reason:** {reason}",
+			"Kicks": "__**User Kick**__\n**User:** `{user}` (`{user.id}`)\n**Moderator:**: `{moderator}` (`{moderator.id}`)\n**Reason:** {reason}",
+			"Nonbot Bans": "`{user}` (`{user.id}`) has just been banned from this server.",
+			"Warns": "__**User Warning**__\n**User:** `{user}` (`{user.id}`)\n**Moderator:**: `{moderator}` (`{moderator.id}`)\n**Reason:** {reason}",
+			"Warn Kick": "__**User Warning/Kick**__\n**User:** `{user}` (`{user.id}`)\n**Moderator:**: `{moderator}` (`{moderator.id}`)\n**Reason:** {reason}",
 			"Unbans": "**{user}** (`{user.id`} has just been unbanned from this server.",
-			"Jailed": "__**Jailed User**__\n**User:** {user} (`{user.id}`)\n**Moderator:**: {moderator} (`{moderator.id}`)\n**Reason:** {reason}",
-			"Unjailed": "__**Unjailed User**__\n**User:** {user} (`{user.id}`)\n**Moderator:**: {moderator} (`{moderator.id}`)\n**Reason:** {reason}"
+			"Jailed": "__**Jailed User**__\n**User:** `{user}` (`{user.id}`)\n**Moderator:**: `{moderator}` (`{moderator.id}`)\n**Reason:** {reason}",
+			"Unjailed": "__**Unjailed User**__\n**User:** `{user}` (`{user.id}`)\n**Moderator:**: `{moderator}` (`{moderator.id}`)\n**Reason:** {reason}"
 		},
 		"PMs": {
 			"Joins": "As salamu 3aleykum **{user}**, welcome to the **{server.name}** Discord server! Please read the rules in the <#257532399456485376> channel. New members can talk in <#257521597693427712>. For access to other channels, please click here <https://goo.gl/forms/QPbanQE9loVg13G82>.",
