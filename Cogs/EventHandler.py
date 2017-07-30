@@ -13,18 +13,28 @@ class DeleteHandler(object):
         self.bot = bot
 
     def add(self, message):
+
+        # Add the given message to the cache
         userData = self.listCatcher.get(message.author.id, [])
         userData.append(message)
         self.listCatcher[message.author.id] = userData
 
     async def output(self):
+
+        # Iterate though the cache of things that were deleted
         for i, o in self.listCatcher.items():
+
+            # If there was a bulk delete
             if len(o) > 1:
                 em = messageToEmbed(o[0])
                 await self.bot.send_message(self.channel, 'The user `{0}` (`{0.id}`) has just had `{1}` messages deleted.'.format(o[0].author, len(o)))
+
+            # If there was just one message deleted
             else:
                 em = messageToEmbed(o[0])
                 await self.bot.send_message(self.channel, 'This message was just deleted from {.mention}.'.format(o[0].channel), embed=em)
+
+        # Reset cache
         self.listCatcher = {}
 
     async def run(self):
