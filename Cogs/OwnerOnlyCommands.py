@@ -1,3 +1,4 @@
+from aiohttp import ClientSession
 from os import execl
 from sys import exit, executable, argv, exc_info
 from discord import Status
@@ -9,6 +10,54 @@ class OwnerOnly(object):
 
     def __init__(self, bot):
         self.bot = bot
+        self.session = ClientSession(loop=bot.loop)
+
+    def __unload(self):
+        self.session.close()
+
+    @commands.group()
+    @permissionChecker(check='is_owner')
+    async def profile(self):
+        '''
+        Lets you change the profile.
+        '''
+
+        pass
+
+    @profile.command()
+    @permissionChecker(check='is_owner')
+    async def name(self, *, name:str=None):
+        '''
+        Changes the name of the profile.
+        '''
+
+        if name == None:
+            await self.bot.say('`!profile name [NAME]`')
+            return
+
+        await self.bot.edit_profile(username=name)
+        w = await self.bot.say('👌')
+        await sleep(2)
+        await self.bot.delete_message(w)
+
+    @profile.command()
+    @permissionChecker(check='is_owner')
+    async def avatar(self, *, avatar:str=None):
+        '''
+        Changes the profile picture of the bot.
+        '''
+
+        if avatar == None:
+            await self.bot.say('`!profile avatar [URL]`')
+            return
+
+        async with self.session.get(avatar) as r:
+            content = r.read()
+
+        await self.bot.edit_profile(avatar=content)
+        w = await self.bot.say('👌')
+        await sleep(2)
+        await self.bot.delete_message(w)
 
     @commands.command(pass_context=True, hidden=True)
     @permissionChecker(check='is_owner')
