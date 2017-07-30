@@ -10,28 +10,24 @@ class MoneyModeration(object):
 
     def __init__(self, bot:commands.Bot):
         self.bot = bot
-        self.additionRegex = r'^.<@\d+>\+\+ -*\d+$'
+        self.additionRegex = r'^<@\d+> *\+\+ -*\d+$'
 
     async def on_message(self, message):
         
         # Determine if using the `.user++ amount` syntax
         if not search(self.additionRegex, message.content):
-            print('a')
             return
 
         # They are - check permissions
-        if message.author.server_permissions.manage_channels:
-            pass
-        elif getFileJson('Configs.json')['Owner IDs']:
-            pass
-        elif message.author.server_permissions.administrator:
+        if message.author.server_permissions.manage_channels or message.author.id in getFileJson('Configs.json')['Owner IDs'] or message.author.server_permissions.administrator:
             pass
         else:
-            raise MemberMissingPermissions
+            await self.bot.send_message(message.channel, 'You are missing the permissions required to run that command.')
+            return
 
         # Wew that was a long line; change the user
         user = message.channel.server.get_member(''.join(i for i in message.content.split(' ')[0] if i.isdigit()))
-        amount = int(message.content.split(' ')[1])
+        amount = int(message.content.split(' ')[-1])
 
         # Copy paste from the other command 
         userData = getFileJson('userMoney.json')
