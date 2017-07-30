@@ -7,7 +7,7 @@ class UserMoney(object):
 
     def __init__(self, bot):
         self.bot = bot
-        self.logChannels, self.logMessages, self.privateMessages self.serverSettings = getCogConfigurations(bot)
+        self.logChannels, self.logMessages, self.privateMessages, self.serverSettings = getCogConfigurations(bot)
         self.banker = Banker()
 
     async def on_message(self, message):

@@ -10,7 +10,7 @@ class UserModeration(object):
         self.bot = bot 
         self.jailRoleID = getFileJson('Configs.json')['Jail Role']
         self.jailRole = None
-        self.logChannels, self.logMessages, self.privateMessages self.serverSettings = getCogConfigurations(bot)
+        self.logChannels, self.logMessages, self.privateMessages, self.serverSettings = getCogConfigurations(bot)
 
     @commands.command(pass_context=True)
     @permissionChecker(check='ban_members', compare=True)
@@ -157,7 +157,7 @@ class UserModeration(object):
         await self.bot.add_roles(user, self.jailRole)
 
         # Send a message back to the user
-        await self.bot.say('👌 This user has been kicked for reason `{}`.'.format(reason))
+        await self.bot.say('👌 This user has been jailed for reason `{}`.'.format(reason))
 
         # Send a message to the modlogs
         if ctx.message.server.id != self.serverSettings['Server ID']: return
@@ -187,7 +187,7 @@ class UserModeration(object):
         await self.bot.remove_roles(user, self.jailRole)
 
         # Send a message back to the user
-        await self.bot.say('👌 This user has been kicked for reason `{}`.'.format(reason))
+        await self.bot.say('👌 This user has been unjailed for reason `{}`.'.format(reason))
 
         # Send a message to the modlogs
         if ctx.message.server.id != self.serverSettings['Server ID']: return

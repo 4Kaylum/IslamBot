@@ -8,7 +8,7 @@ class UserWarnings(object):
 
     def __init__(self, bot):
         self.bot = bot
-        self.logChannels, self.logMessages, self.privateMessages self.serverSettings = getCogConfigurations(bot)
+        self.logChannels, self.logMessages, self.privateMessages, self.serverSettings = getCogConfigurations(bot)
 
     @commands.command(pass_context=True)
     @permissionChecker(check='kick_members')

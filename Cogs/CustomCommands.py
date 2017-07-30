@@ -96,6 +96,7 @@ class CustomCommands(object):
         del self.cc[tagName]
         self.cc = commands
         saveFileJson('customCommands.json', commands)
+        await self.bot.say('Done!')
 
 
 def setup(bot):
