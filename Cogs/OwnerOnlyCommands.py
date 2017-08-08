@@ -1,7 +1,7 @@
 from aiohttp import ClientSession
 from os import execl
 from sys import exit, executable, argv, exc_info
-from discord import Status
+from discord import Status, Colour
 from discord.ext import commands
 from Cogs.Utils.Permissions import permissionChecker
 
@@ -14,6 +14,30 @@ class OwnerOnly(object):
 
     def __unload(self):
         self.session.close()
+
+    @commands.command(pass_context=True)
+    @permissionChecker(check='is_owner')
+    async def editrolecolour(self, ctx, colour, *, name):
+        '''
+        Lets you change the profile.
+        '''
+
+        r = [i for i in ctx.message.server.roles if name.lower() in i.name.lower()]
+        if len(r) > 1:
+            await self.bot.say('Too many roles etc')
+            return
+        elif len(r) < 1:
+            await self.bot.say('nop no roles like that')
+            return
+
+        if len(colour) == 6:
+            colour = Colour(int(colour, 16))
+        else:
+            await self.bot.say('Idk what colours are, man')
+            return
+
+        await self.bot.edit_role(ctx.message.server, r[0], colour=colour)
+        await self.bot.say('Done.')
 
     @commands.group()
     @permissionChecker(check='is_owner')
