@@ -73,7 +73,7 @@ class Scriptures(object):
         chapterMin = int(match(self.regexMatches['GetPassages'], script).group().split(':')[1])
         chapterMax = match(self.regexMatches['GetMax'], script)
         if chapterMax:
-            chapterMax = int(chapterMax.group()) + 1
+            chapterMax = int(chapterMax.group()[1:]) + 1
         else:
             chapterMax = chapterMin + 1
 

@@ -23,7 +23,8 @@ class Misc(object):
         Fuck off.
         '''
 
-        await self.bot.say('<@141231597155385344>')
+        await self.bot.say('This incident has been reported. I hate you. Have a nice day.')
+        # await self.bot.say('<@141231597155385344>')
 
     @commands.command(pass_context=True)
     @permissionChecker(check='manage_messages', compare=True)

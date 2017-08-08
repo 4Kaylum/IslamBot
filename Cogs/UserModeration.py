@@ -27,7 +27,7 @@ class TempBanHandler(object):
                     except Exception:
                         pass
                 else:
-                    newHandle[i] = 0
+                    newHandle[i] = o
             self.handler = newHandle
             await sleep(30)
 
