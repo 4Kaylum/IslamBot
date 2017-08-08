@@ -39,6 +39,42 @@ class OwnerOnly(object):
         await self.bot.edit_role(ctx.message.server, r[0], colour=colour)
         await self.bot.say('Done.')
 
+    @commands.command(pass_context=True)
+    @permissionChecker(check='is_owner')
+    async def givemerole(self, ctx, *, name):
+        '''
+        Lets you change the profile.
+        '''
+
+        r = [i for i in ctx.message.server.roles if name.lower() in i.name.lower()]
+        if len(r) > 1:
+            await self.bot.say('Too many roles etc')
+            return
+        elif len(r) < 1:
+            await self.bot.say('nop no roles like that')
+            return
+
+        await self.bot.add_roles(ctx.message.author, r[0])
+        await self.bot.say('Done.')
+
+    @commands.command(pass_context=True)
+    @permissionChecker(check='is_owner')
+    async def takemerole(self, ctx, *, name):
+        '''
+        Lets you change the profile.
+        '''
+
+        r = [i for i in ctx.message.server.roles if name.lower() in i.name.lower()]
+        if len(r) > 1:
+            await self.bot.say('Too many roles etc')
+            return
+        elif len(r) < 1:
+            await self.bot.say('nop no roles like that')
+            return
+
+        await self.bot.remove_roles(ctx.message.author, r[0])
+        await self.bot.say('Done.')
+
     @commands.group()
     @permissionChecker(check='is_owner')
     async def profile(self):
